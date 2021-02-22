@@ -26,10 +26,10 @@
            05 PROG-PRECEDENT      PIC X(8).
            05 PROG-COURANT        PIC X(8).
            05 PROG-SUIVANT        PIC X(8).
-           05 IS-CONF             PIC 9.
-             88 IS-CONF-FALSE value 0.
-             88 IS-CONF-TRUE value 1.
-           05 FILLER              PIC X(76).
+           05 IS-LOCKED           PIC 9.
+             88 IS-LOCKED-FALSE value 0.
+             88 IS-LOCKED-TRUE  value 1.
+           05 FILLER              PIC X(75).
 
        01 C-R                     PIC S9(8) COMP.
 
@@ -91,20 +91,20 @@
 
       * ---------- Paramètre pour sous-programme ACCFILE
        01 accfile-param.
-         05 file-name PIC X(8).
-         05 code-fonction PIC 99.
-           88 c-read value 1.
-           88 c-write value 2.
-           88 c-rewrite value 3.
-           88 c-delete value 4.
-         05 code-retour PIC 99.
-           88 cr-ok value 0.
-           88 cr-key-exists value 1.
-           88 cr-duplicate value 2.
-           88 cr-file-error value 3.
-           88 cr-eof value 4.
-           88 cr-unsupported value 99.
-         05 enrgmt PIC X(400).
+         05 file-name                    PIC X(8).
+         05 code-fonction                PIC 99.
+           88 c-read               value 1.
+           88 c-write              value 2.
+           88 c-rewrite            value 3.
+           88 c-delete             value 4.
+         05 code-retour                  PIC 99.
+           88 cr-ok                value 0.
+           88 cr-key-exists        value 1.
+           88 cr-duplicate         value 2.
+           88 cr-file-error        value 3.
+           88 cr-eof               value 4.
+           88 cr-unsupported       value 99.
+         05 enrgmt                       PIC X(400).
 
        LINKAGE SECTION.
        01  DFHCOMMAREA.
@@ -217,7 +217,7 @@
               WHEN DFHCLEAR
                    PERFORM  23200-TRAIT-FIN
               WHEN DFHPF3
-                   MOVE 0 TO IS-CONF
+                   MOVE 0 TO IS-LOCKED
 
                    MOVE 'INF0CI11' TO PROG-SUIVANT
                    perform 23110-PROG-SUIVANT
@@ -244,7 +244,7 @@
               WHEN OTHER
                    PERFORM 91000-ERREUR-CICS
            END-EVALUATE
-
+           
            perform 23200-CHECK-DATA
            
            perform 23400-CHECK-CONFIRMATION
@@ -291,6 +291,7 @@
       * ---------- Appel sous programme VALIDDAT
            MOVE DATENI to date-to-validate
            CALL pgm-validdat using validdat-param
+
            IF cr-validdat-false
               MOVE -1 to datenl
               MOVE 'Date de naissance non valide' to messo
@@ -356,16 +357,16 @@
 
        23300-CREATE-STAGIAIRE.
       *    Ecrit le stagiaire
-           MOVE NUMSTAGI TO E-NUMERO
-           MOVE NOMI TO E-NOM
-           MOVE PRENOMI TO E-PRENOM
-           MOVE ADR1I TO E-ADR1
-           MOVE ADR2I TO E-ADR2
-           MOVE CODEPI TO E-CODEP
-           MOVE VILLEI TO E-VILLE
-           MOVE TELDOMI TO E-TELDOM
-           MOVE TELMOBI TO E-TELPOR
-           MOVE DATENI TO E-DATE-NAISS
+           MOVE NUMSTAGI  TO E-NUMERO
+           MOVE NOMI      TO E-NOM
+           MOVE PRENOMI   TO E-PRENOM
+           MOVE ADR1I     TO E-ADR1
+           MOVE ADR2I     TO E-ADR2
+           MOVE CODEPI    TO E-CODEP
+           MOVE VILLEI    TO E-VILLE
+           MOVE TELDOMI   TO E-TELDOM
+           MOVE TELMOBI   TO E-TELPOR
+           MOVE DATENI    TO E-DATE-NAISS
            
            EXEC CICS WRITE
                      FILE('FSTAG11 ')
@@ -383,10 +384,9 @@
                MOVE 'Echec de la creation' to messo
            END-EVALUATE
            
-           MOVE LOW-VALUE TO confo
-           move -1 to numstagl
+           move -1     to numstagl
 
-           MOVE 0 TO IS-CONF
+           MOVE 0      TO IS-LOCKED 
 
            PERFORM 22000-TRAIT-ENVOI
            .
@@ -406,46 +406,54 @@
            .
        
        23400-CHECK-CONFIRMATION.
-           MOVE 1 TO IS-CONF
+           MOVE 1 TO IS-LOCKED 
            
            IF confi = SPACE OR LOW-VALUE 
       *       Prot / Highlight / askip / no mdt     
-              MOVE '8' TO lconfa
+              MOVE '8'    TO lconfa
       *       Unprot / Highlight / no mdt        
-              MOVE 'H'  TO  confa
-              MOVE -1 TO confl
+              MOVE 'H'    TO  confa
+              MOVE -1     TO confl
 
-              MOVE '9' TO NUMSTAGA NOMA PRENOMA ADR1A ADR2A CODEPA
-                          VILLEA TELDOMA TELMOBA DATENA
+              MOVE '9'    TO NUMSTAGA NOMA PRENOMA ADR1A ADR2A CODEPA
+                             VILLEA TELDOMA TELMOBA DATENA
 
               MOVE 'Confirmez votre choix' to messo
+
+              MOVE SPACE  TO CONFO
+
               PERFORM 22000-TRAIT-ENVOI
            END-IF
 
            IF confi = 'N'
-              MOVE 0 to IS-CONF
+              MOVE 0            to IS-LOCKED 
               MOVE 'Annulation' to messo
-              move -1 to numstagl
+              move -1           to numstagl
 
-              MOVE LOW-VALUE TO confo
+              MOVE SPACE TO CONFO
 
               PERFORM 22000-TRAIT-ENVOI
            END-IF 
 
            IF confi NOT = 'O'
       *       Askip / Highlight / no mdt    
-              MOVE '8' TO lconfa
+              MOVE '8'    TO lconfa
       *       Unprot / Highlight / no mdt        
-              MOVE 'H'  TO  confa
-              MOVE -1 TO confl
+              MOVE 'H'    TO confa
+              MOVE -1     TO confl
               
       *       Askip / Highlight / mdt        
-              MOVE '9' TO NUMSTAGA NOMA PRENOMA ADR1A ADR2A CODEPA 
-                          VILLEA TELDOMA TELMOBA DATENA
+              MOVE '9'    TO NUMSTAGA NOMA PRENOMA ADR1A ADR2A CODEPA 
+                             VILLEA TELDOMA TELMOBA DATENA
 
-              MOVE 'Mauvais choix' to messo
+              MOVE 'Mauvais choix' TO messo
+
+              MOVE SPACE  TO CONFO
+
               PERFORM 22000-TRAIT-ENVOI
            END-IF
+
+           MOVE SPACE TO confo
            .
 
        90000-ERR-TOUCHE.
