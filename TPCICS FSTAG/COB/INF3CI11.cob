@@ -254,11 +254,11 @@
 
            if (NUM-STAGI-PREC NOT = NUMSTAGI)
               perform GET-STAGIAIRE
-           END-IF 
+           END-IF
 
            if ( IS-LOCKED-TRUE )           
               perform 23200-CHECK-DATA
-           END-IF 
+           END-IF
            
            perform 23400-CHECK-CONFIRMATION
            
@@ -458,7 +458,6 @@
            move -1     to numstagl
 
            SET IS-LOCKED-FALSE TO TRUE
-           INITIALIZE NUM-STAGI-PREC
 
            PERFORM 22000-TRAIT-ENVOI
            .
