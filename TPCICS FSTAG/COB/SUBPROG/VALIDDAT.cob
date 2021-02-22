@@ -16,8 +16,11 @@
            
        01 MODULO-N.
          05 MODULO4                  PIC 99.
+          88 MOD4       value 0.
          05 MODULO100                PIC 99.
+          88 MOD100     value 0.
          05 MODULO400                PIC 99.
+          88 MOD400     value 0.
 
        LINKAGE SECTION.
        01 pgm-param.
@@ -43,8 +46,7 @@
       *        Check bisextile
              WHEN (MONTH-E = 2 AND DAY-E = 29)
                perform 21200-GET-MODULOS
-               IF (NOT (MODULO4 = 0 AND MODULO100 NOT = 0))
-                OR MODULO400 = 0
+               IF (NOT (MOD400 OR (MOD4 AND NOT MOD100)))
                  perform 21100-DATE-ERROR
                END-IF
              WHEN OTHER
@@ -65,3 +67,4 @@
            DIVIDE YEAR-E BY 100 GIVING MODULO100 REMAINDER MODULO100
            DIVIDE YEAR-E BY 400 GIVING MODULO400 REMAINDER MODULO400
            .
+              
