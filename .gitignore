@@ -1,0 +1,12 @@
+# Cache les configurations vscode
+
+.vscode
+
+# Cache les fichiers de test
+
+PERSO
+TEST
+
+# Cache les fichiers d'informations
+
+$*

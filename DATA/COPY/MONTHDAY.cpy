@@ -1,0 +1,12 @@
+         05 PIC 99 VALUE 31.
+         05 PIC 99 VALUE 29.
+         05 PIC 99 VALUE 31.
+         05 PIC 99 VALUE 30.
+         05 PIC 99 VALUE 31.
+         05 PIC 99 VALUE 30.
+         05 PIC 99 VALUE 31.
+         05 PIC 99 VALUE 31.
+         05 PIC 99 VALUE 30.
+         05 PIC 99 VALUE 31.
+         05 PIC 99 VALUE 30.
+         05 PIC 99 VALUE 31.

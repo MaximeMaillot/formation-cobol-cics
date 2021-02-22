@@ -1,0 +1,7 @@
+         05 PIC X(10) VALUE 'LUNDI'.
+         05 PIC X(10) VALUE 'MARDI'.
+         05 PIC X(10) VALUE 'MERCREDI'.
+         05 PIC X(10) VALUE 'JEUDI'.
+         05 PIC X(10) VALUE 'VENDREDI'.
+         05 PIC X(10) VALUE 'SAMEDI'.
+         05 PIC X(10) VALUE 'DIMANCHE'.
