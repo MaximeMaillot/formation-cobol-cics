@@ -212,8 +212,8 @@
                  MOVE 'INF2CI11' TO PROG-SUIVANT
                  perform 23110-PROG-SUIVANT
                WHEN 3
-                 MOVE 'Choix 3' to messo
-                 PERFORM 22000-TRAIT-ENVOI
+                 MOVE 'INF3CI11' TO PROG-SUIVANT
+                 perform 23110-PROG-SUIVANT
                WHEN 4
                  MOVE 'Choix 4' to messo
                  PERFORM 22000-TRAIT-ENVOI
