@@ -266,8 +266,8 @@
            EVALUATE C-R
              WHEN DFHRESP(NORMAL)
                MOVE 'Read' to messo
-      *        Unprot / mdt
-               MOVE 'A' TO NOMA PRENOMA ADR1A ADR2A CODEPA VILLEA 
+      *        Askip
+               MOVE '0' TO NOMA PRENOMA ADR1A ADR2A CODEPA VILLEA 
                            TELDOMA TELMOBA DATENA
       *        Askip
                MOVE '0' TO CNOMA CPRENOMA CADR1A CCODEPA CVILLEA 

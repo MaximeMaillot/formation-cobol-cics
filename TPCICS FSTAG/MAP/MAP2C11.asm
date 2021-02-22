@@ -1,8 +1,8 @@
         PRINT NOGEN
-MAP1C11 DFHMSD TYPE=&SYSPARM,MODE=INOUT,LANG=COBOL,                    X
+MAP2C11 DFHMSD TYPE=&SYSPARM,MODE=INOUT,LANG=COBOL,                    X
                CTRL=(FREEKB,FRSET),STORAGE=AUTO,TIOAPFX=YES
 * Map de la consultation d'un stagiaire
-MAP1   DFHMDI COLUMN=1,LINE=1,SIZE=(24,80),MAPATTS=(COLOR,HILIGHT),    X
+MAP2   DFHMDI COLUMN=1,LINE=1,SIZE=(24,80),MAPATTS=(COLOR,HILIGHT),    X
                DSATTS=(COLOR,HILIGHT),CURSLOC=YES
 * Header du CICS
 IDENT   DFHMDF POS=(1,1),                                              X
