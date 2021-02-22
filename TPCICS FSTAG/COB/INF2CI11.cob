@@ -78,20 +78,20 @@
 
       * ---------- Paramètre pour sous-programme ACCFILE
        01 accfile-param.
-         05 file-name PIC X(8).
-         05 code-fonction PIC 99.
-           88 c-read value 1.
-           88 c-write value 2.
-           88 c-rewrite value 3.
-           88 c-delete value 4.
-         05 code-retour PIC 99.
-           88 cr-ok value 0.
-           88 cr-key-exists value 1.
-           88 cr-duplicate value 2.
-           88 cr-file-error value 3.
-           88 cr-eof value 4.
-           88 cr-unsupported value 99.
-         05 enrgmt PIC X(400).
+         05 file-name                    PIC X(8).
+         05 code-fonction                PIC 99.
+           88 c-read               value 1.
+           88 c-write              value 2.
+           88 c-rewrite            value 3.
+           88 c-delete             value 4.
+         05 code-retour                  PIC 99.
+           88 cr-ok                value 0.
+           88 cr-key-exists        value 1.
+           88 cr-duplicate         value 2.
+           88 cr-file-error        value 3.
+           88 cr-eof               value 4.
+           88 cr-unsupported       value 99.
+         05 enrgmt                       PIC X(400).
 
        LINKAGE SECTION.
        01  DFHCOMMAREA.
@@ -266,26 +266,26 @@
            EVALUATE C-R
              WHEN DFHRESP(NORMAL)
                MOVE 'Read' to messo
-      *        Unprot / mdt 
+      *        Unprot / mdt
                MOVE 'A' TO NOMA PRENOMA ADR1A ADR2A CODEPA VILLEA 
                            TELDOMA TELMOBA DATENA
-      *        Askip                     
+      *        Askip
                MOVE '0' TO CNOMA CPRENOMA CADR1A CCODEPA CVILLEA 
                            CTELDOMA CTELMOBA CDATENA
 
-              MOVE E-NOM TO NOMO
-              MOVE E-PRENOM TO PRENOMO
-              MOVE E-ADR1 TO ADR1O
-              MOVE E-ADR2  TO ADR2O
-              MOVE E-CODEP TO CODEPO
-              MOVE E-VILLE TO VILLEO
-              MOVE E-TELDOM TO TELDOMO
-              MOVE E-TELPOR TO TELMOBO
+              MOVE E-NOM        TO NOMO
+              MOVE E-PRENOM     TO PRENOMO
+              MOVE E-ADR1       TO ADR1O
+              MOVE E-ADR2       TO ADR2O
+              MOVE E-CODEP      TO CODEPO
+              MOVE E-VILLE      TO VILLEO
+              MOVE E-TELDOM     TO TELDOMO
+              MOVE E-TELPOR     TO TELMOBO
               MOVE E-DATE-NAISS TO DATENO
              WHEN OTHER
-               MOVE LOW-VALUE TO MAP2O
+               MOVE LOW-VALUE   TO MAP2O
                
-               MOVE 'Echec' to messo
+               MOVE 'Echec'     to messo
            END-EVALUATE
            
            MOVE -1 to numstagl
