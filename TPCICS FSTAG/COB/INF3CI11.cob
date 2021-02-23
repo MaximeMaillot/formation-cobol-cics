@@ -233,8 +233,13 @@
            .
 
        23100-TRAIT-ENTER.
-      *------------------*          
-           INITIALIZE messo
+      *------------------*
+           EXEC CICS RECEIVE MAP   ('MAP3')
+                             MAPSET(MA-MAP)
+                             RESP  (C-R)
+           END-EXEC
+                     
+           INITIALIZE messi
 
            EVALUATE C-R
               WHEN DFHRESP(NORMAL)
