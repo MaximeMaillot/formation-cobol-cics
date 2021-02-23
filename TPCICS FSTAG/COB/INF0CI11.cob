@@ -215,8 +215,8 @@
                  MOVE 'INF3CI11' TO PROG-SUIVANT
                  perform 23110-PROG-SUIVANT
                WHEN 4
-                 MOVE 'Choix 4' to messo
-                 PERFORM 22000-TRAIT-ENVOI
+                 MOVE 'INF4CI11' TO PROG-SUIVANT
+                    perform 23110-PROG-SUIVANT
                WHEN 5
                  MOVE 'Choix 5' to messo
                  PERFORM 22000-TRAIT-ENVOI 
@@ -249,14 +249,14 @@
                     MOVE 'INF2CI11' TO PROG-SUIVANT
                     perform 23110-PROG-SUIVANT
                  WHEN 9
-                    MOVE 'Cursor on 3' to messo
-                    perform 22000-TRAIT-ENVOI
+                    MOVE 'INF3CI11' TO PROG-SUIVANT
+                    perform 23110-PROG-SUIVANT
                  WHEN 11
-                    MOVE 'Cursor on 4' to messo
-                    perform 22000-TRAIT-ENVOI
+                    MOVE 'INF4CI11' TO PROG-SUIVANT
+                    perform 23110-PROG-SUIVANT
                  WHEN 13
-                    MOVE 'Cursor on 5' to messo
-                    perform 22000-TRAIT-ENVOI
+                    MOVE 'Choix 5' to messo
+                    PERFORM 22000-TRAIT-ENVOI
                  WHEN OTHER
                     MOVE -1 to choixl
                     MOVE 'Veuillez saisir un choix'
