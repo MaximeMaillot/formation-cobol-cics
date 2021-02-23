@@ -10,7 +10,7 @@ IDENT   DFHMDF POS=(1,1),                                              X
                INITIAL='SDFDGFXXXXXXXXXXXX'
         DFHMDF POS=(1,25),COLOR=RED,                                   X
                ATTRB=ASKIP,LENGTH=32,                                  X
-               INITIAL='CREATION D''UN STAGIAIRE'
+               INITIAL='MISE A JOUR D''UN STAGIAIRE'
 JOUR    DFHMDF POS=(1,58),                                             X
                ATTRB=(ASKIP,FSET),LENGTH=10,                           X
                INITIAL='LEJOURAFFI'
