@@ -12,7 +12,7 @@ IDENT   DFHMDF POS=(1,1),                                              X
                ATTRB=ASKIP,LENGTH=32,COLOR=RED,                        X
                INITIAL='GESTION DES STAGIAIRES'
 JOUR    DFHMDF POS=(1,58),                                             X
-               ATTRB=ASKIP,LENGTH=10,                                  X
+               ATTRB=(ASKIP,FSET),LENGTH=10,                           X
                INITIAL='LEJOURAFFI'
 DATE    DFHMDF POS=(1,69),                                             X
                ATTRB=ASKIP,LENGTH=10,                                  X

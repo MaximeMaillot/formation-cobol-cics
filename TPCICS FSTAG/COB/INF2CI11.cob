@@ -164,7 +164,7 @@
            END-EXEC
 
            STRING
-            eibtrnid delimited by size
+            MA-TRX delimited by size
             '/' delimited by size
             eibtrmid delimited by size
             '/map2c11' delimited by size
@@ -309,6 +309,10 @@
 
        90000-ERR-TOUCHE.
       *----------------*
+           EXEC CICS RECEIVE MAP   ('MAP2')
+                             MAPSET(MA-MAP)
+                             RESP  (C-R)
+           END-EXEC
            MOVE 'TOUCHE DE FONCTION INVALIDE' TO messo
            move -1 to NUMSTAGL
            PERFORM  22000-TRAIT-ENVOI

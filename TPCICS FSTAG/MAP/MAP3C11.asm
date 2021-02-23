@@ -12,7 +12,7 @@ IDENT   DFHMDF POS=(1,1),                                              X
                ATTRB=ASKIP,LENGTH=32,                                  X
                INITIAL='CREATION D''UN STAGIAIRE'
 JOUR    DFHMDF POS=(1,58),                                             X
-               ATTRB=ASKIP,LENGTH=10,                                  X
+               ATTRB=(ASKIP,FSET),LENGTH=10,                           X
                INITIAL='LEJOURAFFI'
 DATE    DFHMDF POS=(1,69),                                             X
                ATTRB=ASKIP,LENGTH=10,                                  X
