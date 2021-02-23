@@ -1,0 +1,16 @@
+{
+    "zopeneditor.propertygroups": [
+        {
+            "name": "local-cobol-files",
+            "type": "local",
+            "language": "cobol",
+            "syslib": [
+                "D:/Formation/Project/formation-cobol-cics/DATA/COPY",
+                "D:/Formation/Project/formation-cobol-cics/DATA/SYSLIB",
+                "D:/Formation/Project/formation-cobol-cics/DATA/MAP",
+                "D:/Formation/Project/formation-cobol-cics/DATA/FILE"
+            ],
+        }
+    ],
+    "editor.formatOnSave": true
+}
