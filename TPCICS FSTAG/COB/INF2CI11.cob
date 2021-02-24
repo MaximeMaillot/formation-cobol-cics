@@ -26,7 +26,20 @@
            05 PROG-PRECEDENT      PIC X(8).
            05 PROG-COURANT        PIC X(8).
            05 PROG-SUIVANT        PIC X(8).
-           05 FILLER              PIC X(76).
+           05 CURRENT-KEY         PIC 9(4).
+           05 NUM-PAGE            PIC S9(4) COMP.
+           05 STAGIAIRE-EOF       PIC 9.
+             88 NO-EOF value 0.
+             88 EOF-NEXT value 1.
+           05 ZOOM-BOOLEAN        PIC 9.
+             88 IS-ZOOM      value 1.
+             88 IS-NOT-ZOOM  value 0.
+           05 FILLER            PIC X(4).
+           05 LOCK-BOOLEAN        PIC 9.
+             88 IS-NOT-LOCKED value 0.
+             88 IS-LOCKED     value 1.
+           05 FILLER              PIC X(58).
+           05 TS-NAME             PIC X(8).
 
        01 C-R                     PIC S9(8) COMP.
 
@@ -130,7 +143,13 @@
               PERFORM  21000-TRAIT-CHARGEMENT
               PERFORM  22000-TRAIT-ENVOI
            ELSE
-              PERFORM  23000-TRAIT-RECEPTION
+              IF IS-ZOOM 
+                 MOVE '/' TO NUMSTAGA
+                 perform SHOW-DATA
+                 PERFORM  TRAIT-ZOOM
+              ELSE
+                 PERFORM 23000-TRAIT-RECEPTION
+              END-IF                    
            END-IF
            .
       *********************************************************
@@ -145,7 +164,11 @@
            .
 
        21100-TRAIT-SPECIFIQUE.
-           continue
+           IF IS-ZOOM
+              MOVE '/' TO NUMSTAGA
+              MOVE CURRENT-KEY to NUMSTAGI
+              perform 23300-READ-STAGIAIRE
+           END-IF
            .
 
        29000-FORMATE-HEADER.
@@ -213,6 +236,24 @@
            END-EVALUATE
            .
 
+       TRAIT-ZOOM.
+           EVALUATE EIBAID
+              WHEN DFHCLEAR
+                   PERFORM  23200-TRAIT-FIN
+              WHEN DFHPF3
+                   MOVE 'INF5CI11' TO PROG-SUIVANT
+                   perform 23110-PROG-SUIVANT
+              WHEN DFHPF12
+                   PERFORM  23200-TRAIT-FIN
+              WHEN OTHER
+                    EXEC CICS RECEIVE MAP   ('MAP2')
+                             MAPSET(MA-MAP)
+                             RESP  (C-R)
+                    END-EXEC
+                   PERFORM  22000-TRAIT-ENVOI
+           END-EVALUATE
+           .
+
        23100-TRAIT-ENTER.
       *------------------*
            EXEC CICS RECEIVE MAP   ('MAP2')
@@ -250,7 +291,15 @@
              MOVE 'Numero invalide' to messo
              perform 22000-TRAIT-ENVOI
            END-IF
-           .    
+           .
+       
+       SHOW-DATA.
+      *        Askip
+               MOVE '0' TO NOMA PRENOMA ADR1A ADR2A CODEPA VILLEA 
+                           TELDOMA TELMOBA DATENA
+                           CNOMA CPRENOMA CADR1A CCODEPA CVILLEA 
+                           CTELDOMA CTELMOBA CDATENA
+           .
 
        23300-READ-STAGIAIRE.
       *    Ecrit le stagiaire
@@ -265,13 +314,7 @@
 
            EVALUATE C-R
              WHEN DFHRESP(NORMAL)
-               MOVE 'Read' to messo
-      *        Askip
-               MOVE '0' TO NOMA PRENOMA ADR1A ADR2A CODEPA VILLEA 
-                           TELDOMA TELMOBA DATENA
-      *        Askip
-               MOVE '0' TO CNOMA CPRENOMA CADR1A CCODEPA CVILLEA 
-                           CTELDOMA CTELMOBA CDATENA
+               perform SHOW-DATA
 
               MOVE E-NOM        TO NOMO
               MOVE E-PRENOM     TO PRENOMO
@@ -285,7 +328,7 @@
              WHEN OTHER
                MOVE LOW-VALUE   TO MAP2O
                
-               MOVE 'Echec'     to messo
+               MOVE "Stagiaire non trouvé" to messo
            END-EVALUATE
            
            MOVE -1 to numstagl
@@ -326,6 +369,8 @@
 
        99000-FIN-CICS.
       *--------------*
+           EXEC CICS DELETEQ ts queue(ts-name) END-EXEC
+           
            EXEC CICS SEND FROM   (MESSAGE-TXT)
                           LENGTH (LENGTH OF MESSAGE-TXT)
                           ERASE
