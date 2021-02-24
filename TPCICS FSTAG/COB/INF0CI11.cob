@@ -198,8 +198,6 @@
            EVALUATE C-R
               WHEN DFHRESP(NORMAL)
                    CONTINUE
-              WHEN DFHRESP(MAPFAIL)
-                   perform 23120-handle-cursor
               WHEN OTHER
                    PERFORM 91000-ERREUR-CICS
            END-EVALUATE
@@ -218,10 +216,10 @@
                  MOVE 'INF4CI11' TO PROG-SUIVANT
                     perform 23110-PROG-SUIVANT
                WHEN 5
-                 MOVE 'Choix 5' to messo
-                 PERFORM 22000-TRAIT-ENVOI 
+                 MOVE 'INF5CI11' TO PROG-SUIVANT
+                    perform 23110-PROG-SUIVANT
                WHEN OTHER                 
-                 perform 23120-handle-cursor
+                 perform HANDLE-CURSOR
            END-EVALUATE
            .
 
@@ -233,7 +231,7 @@
            END-EXEC
            .
        
-       23120-handle-cursor.
+       HANDLE-CURSOR.
            IF (choixi NOT = SPACE AND LOW-VALUE)
                MOVE -1 to choixl
                MOVE 'H' to choixa
@@ -255,8 +253,8 @@
                     MOVE 'INF4CI11' TO PROG-SUIVANT
                     perform 23110-PROG-SUIVANT
                  WHEN 13
-                    MOVE 'Choix 5' to messo
-                    PERFORM 22000-TRAIT-ENVOI
+                    MOVE 'INF5CI11' TO PROG-SUIVANT
+                    perform 23110-PROG-SUIVANT
                  WHEN OTHER
                     MOVE -1 to choixl
                     MOVE 'Veuillez saisir un choix'
