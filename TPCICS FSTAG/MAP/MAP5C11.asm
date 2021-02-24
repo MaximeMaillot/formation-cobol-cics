@@ -26,7 +26,7 @@ HEURE   DFHMDF POS=(2,69),                                             X
                ATTRB=ASKIP,LENGTH=26,                                  X
                INITIAL='N° DU STAGIAIRE DE DEBUT :'
 NUMSTAG DFHMDF POS=(4,37),                                             X
-               ATTRB=(UNPROT,NUM,IC),LENGTH=4
+               ATTRB=(UNPROT,NUM,FSET,IC),LENGTH=4
         DFHMDF POS=(4,42),ATTRB=ASKIP,LENGTH=1
         DFHMDF POS=(4,69),                                             X
                ATTRB=ASKIP,LENGTH=6,                                   X
@@ -37,7 +37,7 @@ NUMPAGE DFHMDF POS=(4,76),                                             X
 * HEADER LISTE
         DFHMDF POS=(6,1),COLOR=TURQUOISE,                              X
                ATTRB=ASKIP,LENGTH=6,                                   X
-               INITIAL='N°STAG'
+               INITIAL='NUM'
         DFHMDF POS=(6,15),COLOR=TURQUOISE,                             X
                ATTRB=ASKIP,LENGTH=19,                                  X
                INITIAL='NOM'
@@ -52,7 +52,7 @@ NUMPAGE DFHMDF POS=(4,76),                                             X
                INITIAL='TEL'
 * LISTE DE STAGIAIRE
 LIGNE   DFHMDF POS=(8,1),                                              X
-               ATTRB=ASKIP,LENGTH=79,OCCURS=10
+               ATTRB=(ASKIP,FSET),LENGTH=79,OCCURS=10
 * MESSAGE D'INFORMATION
 MESS    DFHMDF POS=(21,1),COLOR=NEUTRAL,                               X
                ATTRB=ASKIP,LENGTH=79
