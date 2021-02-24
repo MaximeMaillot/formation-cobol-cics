@@ -181,7 +181,7 @@
             MA-TRX  delimited by size
             '/' delimited by size
             eibtrmid delimited by size
-            '/MAP4c11' delimited by size
+            '/map4c11' delimited by size
             into idento
            END-STRING
            
