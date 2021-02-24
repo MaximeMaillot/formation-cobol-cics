@@ -10,11 +10,14 @@
 
 ## Installez l'extension IBM-JCL
 
-IBM Z Open Editor gère le jcl, mais si vous voulez une extension plus poussée
 [IBM-JCL](https://marketplace.visualstudio.com/items?itemName=kelosky.ibm-jcl)
 
+IBM Z Open Editor gère le jcl, mais si vous voulez une extension plus poussée
+
 Nommez vos fichiers COBOL en **.cob** ou **.cbl**
+
 Nommez vos fichiers JCL en **.jcl**
+
 Nommez vos fichiers MAP en **.asm** (support basique)
 
 Vous avez maintenant un support de cobol basique.
