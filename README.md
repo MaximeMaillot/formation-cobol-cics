@@ -14,11 +14,15 @@
 
 IBM Z Open Editor gère le jcl, mais si vous voulez une extension plus poussée
 
+## Nomenclature des fichiers
+
 Nommez vos fichiers COBOL en **.cob** ou **.cbl**
 
 Nommez vos fichiers JCL en **.jcl**
 
 Nommez vos fichiers MAP en **.asm** (support basique)
+
+Nommez vos fichiers COPY en **.cpy**.
 
 Vous avez maintenant un support de cobol basique.
 
@@ -47,5 +51,3 @@ Copier coller le code suivant
 ```
 
 la **syslib** est un tableau de chemin vers vos copybook, vous pouvez en ajouter autant que vous voulez séparer par des virgules
-
-Nommez vos fichiers COPY en **.cpy**.
