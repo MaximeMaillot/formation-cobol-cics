@@ -34,7 +34,7 @@
            05 ZOOM-BOOLEAN        PIC 9.
              88 IS-ZOOM      value 1.
              88 IS-NOT-ZOOM  value 0.
-           05 FILLER            PIC X(4).
+           05 ZOOM-KEY            PIC 9(4).
            05 LOCK-BOOLEAN        PIC 9.
              88 IS-NOT-LOCKED value 0.
              88 IS-LOCKED     value 1.
@@ -166,7 +166,7 @@
        21100-TRAIT-SPECIFIQUE.
            IF IS-ZOOM
               MOVE '/' TO NUMSTAGA
-              MOVE CURRENT-KEY to NUMSTAGI
+              MOVE ZOOM-KEY to NUMSTAGI
               perform 23300-READ-STAGIAIRE
            END-IF
            .

@@ -37,7 +37,7 @@
            05 ZOOM-BOOLEAN        PIC 9.
              88 IS-ZOOM      value 1.
              88 IS-NOT-ZOOM  value 0.
-           05 FILLER            PIC X(4).
+           05 ZOOM-KEY            PIC X(4).
            05 LOCK-BOOLEAN        PIC 9.
              88 IS-NOT-LOCKED value 0.
              88 IS-LOCKED     value 1.
@@ -108,7 +108,7 @@
       
       *------ Variable de parcours de tableau --------- 
        77 I                           PIC 99.
-       77 posI                        PIC S99.      
+       77 posI                        PIC S99.   
 
       *======================================================*
       *          L I N K A G E     S E C T I O N             *
@@ -147,7 +147,7 @@
        20000-TRAIT-PROGRAMME.
       *---------------------*
            STRING 
-              eibtrnid DELIMITED BY SIZE
+              'T5CB' DELIMITED BY SIZE
               eibtrmid DELIMITED BY SIZE
             INTO ts-name
            END-STRING
@@ -175,10 +175,12 @@
 
               MOVE LOW-VALUE TO MAP5O
 
+              MOVE ZOOM-KEY TO NUMSTAGO
+
               EXEC CICS READQ ts queue(ts-name)
                                  item(NUM-PAGE)
                                  into(map5o)
-              END-EXEC                        
+              END-EXEC
            END-IF
            .
 
@@ -283,6 +285,9 @@
                    MOVE SPACE TO NUMSTAGO
                    MOVE 'J' TO NUMSTAGA
                    SET IS-NOT-LOCKED TO TRUE
+                   perform varying I FROM 1 BY 1 UNTIL I > 10
+                       MOVE SPACE TO LIGNEO(I)
+                   end-perform
                    perform 22000-TRAIT-ENVOI 
               WHEN DFHPF11
                    perform 23500-TRAIT-CURSOR
@@ -303,7 +308,17 @@
       *------------------*
            MOVE NUMSTAGI TO CURRENT-KEY
 
-           MOVE 0 TO NUM-PAGE
+           EXEC CICS DELETEQ ts queue(ts-name) RESP(C-R) END-EXEC
+           EVALUATE C-R
+              WHEN DFHRESP(NORMAL)
+                 continue
+              WHEN DFHRESP(QIDERR)
+                 continue
+              WHEN OTHER 
+                 continue
+           END-EVALUATE
+
+           MOVE 1 TO NUM-PAGE
            MOVE 9 TO STAGIAIRE-EOF
            
            EXEC CICS STARTBR
@@ -327,6 +342,8 @@
            SET IS-LOCKED TO TRUE
            
            perform 23130-READ-STAGIAIRE
+
+           perform 22000-TRAIT-ENVOI
            .
 
        23110-RECEIVE-MAP.
@@ -345,6 +362,8 @@
 
        23120-START-BR.
       *--------------*
+           ADD 1 TO CURRENT-KEY
+
            EXEC CICS STARTBR
                      FILE('FSTAG11 ')
                      RIDFLD(CURRENT-KEY)
@@ -355,8 +374,8 @@
                WHEN DFHRESP(NORMAL)
                    continue
                WHEN DFHRESP(NOTFND)
-                   MOVE NUM-PAGE TO STAGIAIRE-EOF
                    SUBTRACT 1 FROM NUM-PAGE
+                   MOVE NUM-PAGE TO STAGIAIRE-EOF 
                    MOVE "Fin de fichier" to messo
                    PERFORM 22000-TRAIT-ENVOI
            END-EVALUATE
@@ -381,7 +400,6 @@
                    continue
                WHEN DFHRESP(ENDFILE)
                    MOVE NUM-PAGE TO STAGIAIRE-EOF 
-                   ADD 1 TO NUM-PAGE
                    perform varying I FROM I BY 1 UNTIL I > 10
                      MOVE SPACE TO LIGNEO(I)
                    END-PERFORM
@@ -400,13 +418,10 @@
               
               MOVE W-LIGNE TO LIGNEO(I)
            END-PERFORM
-           ADD 1 TO NUM-PAGE
            
            EXEC CICS WRITEQ ts queue(ts-name)
                                from(map5i)
            END-EXEC
-
-           perform 22000-TRAIT-ENVOI
            .           
 
       *--------------------------------------------------
@@ -438,7 +453,7 @@
       *--------------------------------------------------
        23400-TRAIT-PAGE-NEXT.
       *----------------------*            
-           IF NUM-PAGE > STAGIAIRE-EOF
+           IF NUM-PAGE >= STAGIAIRE-EOF
               MOVE "Derniere page atteinte" TO MESSO
               perform 22000-TRAIT-ENVOI
            END-IF
@@ -457,7 +472,6 @@
                WHEN DFHRESP(NORMAL)
                    continue
                WHEN DFHRESP(ITEMERR)
-                   SUBTRACT 1 FROM NUM-PAGE 
                    perform 23120-START-BR
                    perform 23130-READ-STAGIAIRE
                WHEN OTHER
@@ -477,7 +491,7 @@
            COMPUTE posCursor = ((EIBCPOSN / 80) + 1) - 7
            IF posCursor  >= 1 AND posCursor <= 10
                  MOVE LIGNEI(posCursor) TO CHECK-LIGNE
-                 MOVE LIGNE-KEY TO CURRENT-KEY
+                 MOVE LIGNE-KEY TO ZOOM-KEY
               IF LIGNE-KEY = SPACE OR LOW-VALUE OR LIGNE-KEY NOT NUMERIC
                  move "Mauvaise donnees de curseur" to messo
                  perform 22000-TRAIT-ENVOI
