@@ -27,7 +27,7 @@
            05 PROG-COURANT        PIC X(8).
            05 PROG-SUIVANT        PIC X(8).
            05 CURRENT-KEY         PIC 9(4).
-           05 NUM-PAGE            PIC S9(4) COMP.
+           05 FILLER              PIC S9(4) COMP.
            05 STAGIAIRE-EOF       PIC 9.
              88 NO-EOF value 0.
              88 EOF-NEXT value 1.
@@ -35,10 +35,7 @@
              88 IS-ZOOM      value 1.
              88 IS-NOT-ZOOM  value 0.
            05 ZOOM-KEY            PIC 9(4).
-           05 LOCK-BOOLEAN        PIC 9.
-             88 IS-NOT-LOCKED value 0.
-             88 IS-LOCKED     value 1.
-           05 FILLER              PIC X(58).
+           05 FILLER              PIC X(56).
            05 TS-NAME             PIC X(8).
 
        01 C-R                     PIC S9(8) COMP.

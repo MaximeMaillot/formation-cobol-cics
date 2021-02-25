@@ -41,7 +41,7 @@
            05 LOCK-BOOLEAN        PIC 9.
              88 IS-NOT-LOCKED value 0.
              88 IS-LOCKED     value 1.
-           05 FILLER              PIC X(58).
+           05 FILLER              PIC X(55).
            05 TS-NAME             PIC X(8).
 
        77 NUM-PAGE-EDIT           PIC Z9.

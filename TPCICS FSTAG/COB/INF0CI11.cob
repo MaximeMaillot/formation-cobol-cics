@@ -31,7 +31,8 @@
            05 PROG-PRECEDENT      PIC X(8).
            05 PROG-COURANT        PIC X(8).
            05 PROG-SUIVANT        PIC X(8).
-           05 FILLER              PIC X(76).
+           05 FILLER              PIC X(68).
+           05 TS-NAME             PIC X(8).
 
        01 C-R                     PIC S9(8) COMP.
 
@@ -87,7 +88,6 @@
             PERFORM  10000-DEBUT-PROGRAMME
             PERFORM  20000-TRAIT-PROGRAMME
             GOBACK.
-
 
        10000-DEBUT-PROGRAMME.
       *---------------------*
@@ -289,6 +289,8 @@
 
        99000-FIN-CICS.
       *--------------*
+           EXEC CICS DELETEQ ts queue(ts-name) END-EXEC
+
            EXEC CICS SEND FROM   (MESSAGE-TXT)
                           LENGTH (LENGTH OF MESSAGE-TXT)
                           ERASE

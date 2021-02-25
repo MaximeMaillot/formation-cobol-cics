@@ -29,7 +29,8 @@
            05 IS-LOCKED           PIC 9.
              88 IS-LOCKED-FALSE value 0.
              88 IS-LOCKED-TRUE  value 1.
-           05 FILLER              PIC X(75).
+           05 FILLER              PIC X(67).
+           05 TS-NAME             PIC X(8).
 
        01 C-R                     PIC S9(8) COMP.
 
@@ -475,6 +476,8 @@
 
        99000-FIN-CICS.
       *--------------*
+           EXEC CICS DELETEQ ts queue(ts-name) END-EXEC
+
            EXEC CICS SEND FROM   (MESSAGE-TXT)
                           LENGTH (LENGTH OF MESSAGE-TXT)
                           ERASE
