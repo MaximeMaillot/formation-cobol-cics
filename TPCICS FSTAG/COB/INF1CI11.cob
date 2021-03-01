@@ -59,6 +59,12 @@
       *------------------------------------------------------*
        COPY DFHBMSCA.
 
+      *------------------------------------------------------*
+      *   DESCRIPTION   DE LA TD INFO                        *
+      *------------------------------------------------------*
+       
+       COPY CTDINFO.
+
       *======================================================*
       *          L I N K A G E     S E C T I O N             *
       *======================================================*
@@ -134,6 +140,8 @@
               MOVE LK-COMMAREA  TO WS-COMMAREA
            END-IF
 
+           INITIALIZE E-TD
+
            MOVE  PROG-COURANT     TO  PROG-PRECEDENT
            MOVE  MON-PROG         TO  PROG-COURANT
            .
@@ -159,14 +167,14 @@
            .
 
        21100-TRAIT-SPECIFIQUE.
-           continue
+           perform 29000-FORMATE-HEADER
            .
 
        29000-FORMATE-HEADER.
            EXEC CICS 
                 ASKTIME
                 ABSTIME(interval)
-           END-EXEC  
+           END-EXEC
            EXEC CICS 
                 FORMATTIME
                 ABSTIME(interval)
@@ -190,7 +198,6 @@
       
        22000-TRAIT-ENVOI.
       *-----------------*
-           perform 29000-FORMATE-HEADER 
            IF PROG-PRECEDENT  NOT =  PROG-COURANT
               EXEC CICS SEND MAP    ('MAP1')
                              MAPSET (MA-MAP)
@@ -235,6 +242,8 @@
                              MAPSET(MA-MAP)
                              RESP  (C-R)
            END-EXEC
+
+           perform 29000-FORMATE-HEADER
 
            EVALUATE C-R
               WHEN DFHRESP(NORMAL)
@@ -378,7 +387,37 @@
 
            EVALUATE C-R
              WHEN DFHRESP(NORMAL)
-               MOVE 'Stagiaire ajoute avec succes' to messo
+              MOVE 'Stagiaire ajoute avec succes' to messo
+              MOVE 'INFO' TO CICS-TD
+
+              EXEC CICS ASSIGN
+                     APPLID(USERID-CICS-TD)
+                     NOHANDLE
+              END-EXEC
+
+              EXEC CICS ASSIGN
+                     USERID(USERID-USER-TD)
+                     NOHANDLE
+              END-EXEC
+              
+              MOVE eibtrmid TO TERMINAL-TD
+              
+              MOVE dateo TO date-td
+              MOVE heureo TO heure-td
+
+              MOVE 'V' TO TYPE-DONNEES
+              MOVE 'FSTAG11 ' TO RESSOURCE-TD
+              MOVE 'C' TO FONCTION-TD
+              MOVE E-NUMERO TO NUM-STAG-TD
+
+
+              EXEC CICS WRITEQ TD queue('INFO')
+                                  from (E-TD)
+                                  resp (c-r)
+              END-EXEC
+              IF C-R NOT = DFHRESP(NORMAL)
+                MOVE 'Stagiaire ajouté sans log' TO messo
+              END-IF
              WHEN DFHRESP(DUPREC)
                MOVE 'Stagiaire existe deja' to messo
              WHEN OTHER
